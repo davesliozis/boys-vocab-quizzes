@@ -10,7 +10,6 @@
     try {
       const saved = JSON.parse(localStorage.getItem('wordquest-settings') || 'null');
       if (!saved) return;
-      if (['3','5'].includes(saved.grade)) grade = saved.grade;
       for (const g of ['3','5']) if (Array.isArray(saved.units?.[g])) selectedByGrade[g] = new Set(saved.units[g].filter(n => Number.isInteger(n) && n >= 1 && n <= 18));
       if (['10','20','30','all'].includes(saved.length)) $('quiz-length').value = saved.length;
       if (Array.isArray(saved.types) && saved.types.some(t => core.TYPES.includes(t))) document.querySelectorAll('[name="mode"]').forEach(input => { input.checked = saved.types.includes(input.value); });
