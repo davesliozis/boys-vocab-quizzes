@@ -4,13 +4,12 @@
   const data = window.VOCAB_DATA, core = window.QuizCore;
   const names = {meaning:'Match the meaning',word:'Pick the word',synonym:'Follow the clues',typing:'Spell it out',sentence:'Fill the gap'};
   const prompts = {meaning:'What does this word mean?',word:'Which word fits this definition?',synonym:'Which word do these clues describe?',typing:'Can you spell the word?',sentence:'Which word completes the sentence?'};
-  let grade = '3', selected = new Set([1]), questions = [], current = 0, responses = [], answered = false, roundPool = [], roundConfig = {}, activeUnits = [];
-  const selectedByGrade = {'3':new Set([1]),'5':new Set([1])};
+  let grade = '3', selected = new Set(), questions = [], current = 0, responses = [], answered = false, roundPool = [], roundConfig = {}, activeUnits = [];
+  const selectedByGrade = {'3':new Set(),'5':new Set()};
   function readSaved() {
     try {
       const saved = JSON.parse(localStorage.getItem('wordquest-settings') || 'null');
       if (!saved) return;
-      for (const g of ['3','5']) if (Array.isArray(saved.units?.[g])) selectedByGrade[g] = new Set(saved.units[g].filter(n => Number.isInteger(n) && n >= 1 && n <= 18));
       if (['10','20','30','all'].includes(saved.length)) $('quiz-length').value = saved.length;
       if (Array.isArray(saved.types) && saved.types.some(t => core.TYPES.includes(t))) document.querySelectorAll('[name="mode"]').forEach(input => { input.checked = saved.types.includes(input.value); });
     } catch { /* Storage can be unavailable; the quiz still works. */ }
