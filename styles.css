@@ -3,3 +3,5 @@
 .hero h1 span,.hero .eyebrow,.hero-copy,.top-note,.top-note span,.bottom-strip,.bottom-strip b,footer p,footer>span{color:var(--ink)}.hero h1 span{color:#322b49}.card-one{background:#fdceb9}.brand-icon{color:#fff9f6}.topbar,footer{border-color:#526e82}.hero-art .art-ring{border-color:#655d8a}.hero-art .art-spark{color:#322b49}.grades span{background:#fdceb9}
 
 .hero h1{color:#fdceb9}.hero h1 span{color:#655d8a}
+
+.grades span{background:#fff}.grades input:checked+span{font-size:17px}.grades span{min-height:72px}
