@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#51369a">
+  <meta name="description" content="Pick your vocabulary units and practice with word clues, meanings, spelling, and sentence quizzes.">
+  <title>Word Quest • Vocabulary adventures</title>
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script src="data.js" defer></script>
+  <script src="core.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to quiz builder</a>
+<header class="topbar">
+  <a class="brand" href="./" aria-label="Word Quest home"><span class="brand-icon" aria-hidden="true">W<span>✦</span></span>Word Quest<span class="brand-dot">.</span></a>
+  <span class="top-note"><span aria-hidden="true">✦</span> A little practice. A lot of possibilities.</span>
+</header>
+<main id="main" tabindex="-1">
+  <section id="setup">
+    <div class="hero">
+      <div><p class="eyebrow">YOUR NEXT WORD ADVENTURE</p><h1>Small words.<br><span>Big discoveries.</span></h1><p class="hero-copy">Pick your units, mix up the questions, and see what you know.<br class="desktop"> Every round is a fresh adventure.</p></div>
+      <div class="hero-art" aria-hidden="true"><span class="art-spark s1">✦</span><span class="art-spark s2">✳</span><span class="art-ring"></span><div class="word-card card-one"><span>curious</span><small>ready to discover</small></div><div class="word-card card-two"><span>capable</span><small>you've got this</small></div><span class="art-spark s3">✦</span><span class="art-spark s4">+</span></div>
+    </div>
+    <div class="builder">
+      <section class="panel units-panel" aria-labelledby="unit-title">
+        <div class="step-title"><span class="step">01</span><div><h2 id="unit-title">Choose your words</h2><p>One unit or a whole collection. It’s up to you.</p></div></div>
+        <fieldset class="grades"><legend class="sr-only">Choose a workbook</legend><label><input type="radio" name="grade" value="3" checked><span>3rd grade <small>10 words / unit</small></span></label><label><input type="radio" name="grade" value="5"><span>5th grade <small>12 words / unit</small></span></label></fieldset>
+        <div class="unit-toolbar"><p id="selection-note" aria-live="polite"></p><div><button class="text-button" id="select-all" type="button">Select all</button><span aria-hidden="true">/</span><button class="text-button" id="clear-units" type="button">Clear</button></div></div>
+        <fieldset id="unit-grid" class="unit-grid"><legend class="sr-only">Select units to practice</legend></fieldset>
+        <div class="unit-preview"><span class="mini-spark" aria-hidden="true">✦</span><p id="word-preview"></p></div>
+      </section>
+      <aside class="panel config-panel" aria-labelledby="style-title">
+        <div class="step-title"><span class="step orange">02</span><div><h2 id="style-title">Make it your quest</h2><p>A good mix keeps your brain on its toes.</p></div></div>
+        <fieldset class="modes"><legend>Question styles</legend>
+          <label><input type="checkbox" name="mode" value="meaning" checked><span><strong>Match the meaning</strong><small>What does this word mean?</small></span><b aria-hidden="true">Aa</b></label>
+          <label><input type="checkbox" name="mode" value="word" checked><span><strong>Pick the word</strong><small>A definition, four possibilities.</small></span><b aria-hidden="true">↗</b></label>
+          <label><input type="checkbox" name="mode" value="synonym" checked><span><strong>Follow the clues</strong><small>Guess the word from synonyms.</small></span><b aria-hidden="true">✦</b></label>
+          <label><input type="checkbox" name="mode" value="typing" checked><span><strong>Spell it out</strong><small>Type the word that fits.</small></span><b aria-hidden="true">⌨</b></label>
+          <label><input type="checkbox" name="mode" value="sentence" checked><span><strong>Fill the gap</strong><small>Complete the sentence.</small></span><b aria-hidden="true">__</b></label>
+        </fieldset>
+        <label class="length-label" for="quiz-length">Round length</label><select id="quiz-length"><option value="10">10 questions · quick adventure</option><option value="20">20 questions · a little longer</option><option value="30">30 questions · keep exploring</option><option value="all">Every selected word</option></select>
+        <p id="setup-error" class="error" role="alert"></p>
+        <button class="primary start-button" id="start" type="button">Let’s play <span aria-hidden="true">→</span></button>
+        <p class="reassurance">No timer. Take your time and learn as you go.</p>
+      </aside>
+    </div>
+    <div class="bottom-strip"><span><b aria-hidden="true">↻</b> A fresh mix every round</span><span><b aria-hidden="true">✓</b> Learn from every answer</span><span><b aria-hidden="true">♡</b> Practice at your own pace</span></div>
+  </section>
+  <section id="quiz" hidden aria-labelledby="quiz-title">
+    <div class="quiz-top"><button id="back-setup" class="text-button" type="button">← Change units</button><span id="quiz-context"></span><span id="live-score" class="score-pill"></span></div>
+    <div class="progress-meta"><span id="question-number"></span><span id="progress-percent"></span></div><div id="progress" class="progress" role="progressbar" aria-label="Quiz progress" aria-valuemin="0" aria-valuemax="100"><div id="progress-fill"></div></div>
+    <article class="question-card"><div class="question-tags"><span id="type-tag" class="tag"></span><span id="question-unit" class="unit-tag"></span></div><h1 id="quiz-title" tabindex="-1"></h1><p id="question-clue" class="clue"></p><p id="part-of-speech" class="part-of-speech"></p>
+      <form id="answer-form"><div id="choices" class="choices"></div><div id="typed-wrap" hidden><label for="typed-answer">Your word</label><input id="typed-answer" type="text" placeholder="Type your answer…" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"><button id="check-answer" class="primary" type="submit">Check answer <span aria-hidden="true">→</span></button></div></form>
+      <div id="feedback" class="feedback" role="status" aria-live="polite" hidden></div><button id="next" class="primary next-button" type="button" hidden>Next question →</button>
+    </article><p class="quiz-tip">Take a breath. You've got this.</p>
+  </section>
+  <section id="results" hidden aria-labelledby="results-title"><div class="results-hero"><span class="results-star" aria-hidden="true">✦</span><p class="eyebrow">ADVENTURE COMPLETE</p><h1 id="results-title" tabindex="-1">Look how far you’ve come.</h1><p id="result-message"></p><div class="result-stats"><div><strong id="final-score"></strong><span>correct answers</span></div><div><strong id="final-percent"></strong><span>this round</span></div></div><div class="result-actions"><button class="primary" id="practice-missed" type="button">Practice missed words →</button><button class="secondary" id="play-again" type="button">Another round ↻</button><button class="text-button" id="new-quest" type="button">Choose new units</button></div></div><section class="review-panel panel"><h2 id="review-title">Words to revisit</h2><p id="review-note"></p><div id="review-list"></div></section></section>
+</main>
+<footer><a class="brand footer-brand" href="./">Word Quest<span class="brand-dot">.</span></a><p>Built for the boys. Made for discovery.</p><span>3rd + 5th grade vocabulary</span></footer>
+<noscript><p class="noscript">Please enable JavaScript to play Word Quest.</p></noscript>
+</body>
+</html>
