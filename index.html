@@ -7,16 +7,17 @@
   <meta name="description" content="Pick your vocabulary units and practice with word clues, meanings, spelling, and sentence quizzes.">
   <title>Word Quest • Vocabulary adventures</title>
   <link rel="icon" href="icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=blue-preview">
+  <link rel="stylesheet" href="styles.css?v=random-palettes">
   <script src="data.js" defer></script>
   <script src="core.js" defer></script>
-  <script src="app.js?v=empty-units" defer></script>
+  <script src="app.js?v=random-palettes" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to quiz builder</a>
 <header class="topbar">
   <a class="brand" href="./" aria-label="Word Quest home"><span class="brand-icon" aria-hidden="true">W<span>✦</span></span>Word Quest<span class="brand-dot">.</span></a>
   <span class="top-note"><span aria-hidden="true">✦</span> A little practice. A lot of possibilities.</span>
+<button class="secondary color-button" id="change-colors" type="button">✦ Change colors</button><span id="theme-status" class="sr-only" role="status"></span>
 </header>
 <main id="main" tabindex="-1">
   <section id="setup">
