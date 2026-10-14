@@ -110,3 +110,25 @@
   $('practice-missed').addEventListener('click',()=>{const missed=responses.filter(r=>!r.correct).map(r=>r.question.word);start(missed,{types:roundConfig.types,count:'all',distractorPool:roundConfig.distractorPool || roundPool});});
   readSaved();renderUnits();
 })();
+
+// Palettes sampled from https://colorhunt.co/palettes/popular on October 14, 2026.
+(() => {
+ const palettes = ["0107360d1c4222396ffcf1d0", "d8a2a2ffdcdcfff9d68ea66b", "fffad3ffdbb0ffccb8ffb1b1", "790d16e5d3aff5efe1aec4d4", "425b9a76c0ecfff6dcff95a5", "6e351191ac67597928fcecd8", "f5efe34f5b2ab8892dd8c9a8", "db9558fcf9ea97a87aa8bba3", "f9e6a8f2a900cc6f004d2a00", "8e1ea2c654c3ed96d7ffc0de", "2373f4578ef565d0f4f2f7a0", "f6e2e9fefaf3b8cfb384a282", "5c705789a482acc5a6d1edd3", "fcf0daaeac78f2c46a4c4541", "e11a45e3afc9efecd7edc92c", "7d9c65b93636ff9c4cfff2a0", "fef3e2f4ae52d4621a2a1a0e", "287a7455a9a0aeeed3fff8b0", "8ad6d1359fa0fff0c5ff8c52", "de7272ffca88fff6a9b4e4d6", "0862884d8dba97d7ffffefc4", "522d6080426ef2a67bffd38b", "4c23657f5d999e7eb5c4a4da", "ffced8ffddddfff4deffe8c4"];
+ const rgb = hex => hex.match(/\w\w/g).map(n=>parseInt(n,16));
+ const hex = values => '#'+values.map(n=>Math.round(n).toString(16).padStart(2,'0')).join('');
+ const luminance = color => rgb(color.slice(1)).map(n=>{n/=255;return n<=.04045?n/12.92:((n+.055)/1.055)**2.4}).reduce((s,n,i)=>s+n*[.2126,.7152,.0722][i],0);
+ const ratio = (a,b) => (Math.max(luminance(a),luminance(b))+.05)/(Math.min(luminance(a),luminance(b))+.05);
+ const readable = (color,bg) => {let c=color;while(ratio(c,bg)<4.5)c=hex(rgb(c.slice(1)).map(n=>n*.9));return c;};
+ let active=-1;
+ function change() {
+  let next=Math.floor(Math.random()*(palettes.length-1)); if(next>=active && active>=0)next++; if(active<0)next=Math.floor(Math.random()*palettes.length);active=next;
+  const colors=palettes[next].match(/.{6}/g).map(c=>'#'+c).sort((a,b)=>luminance(a)-luminance(b));
+  const bg=colors[3], ink=readable(colors[0],bg), accent=readable(colors[1],'#ffffff');
+  const soft=hex(rgb(colors[2].slice(1)).map(n=>n*.25+255*.75));
+  const vars={'cream':bg,'ink':ink,'muted':readable(colors[0],bg),'purple':accent,'purple-dark':readable(accent,bg),'lavender':soft,'white':'#ffffff','teal':ink,'line':hex(rgb(colors[2].slice(1)).map(n=>n*.5+255*.5)),'card-one':colors[2],'card-one-ink':readable(colors[0],colors[2]),'card-two':colors[1],'card-two-ink':ratio('#ffffff',colors[1])>=4.5?'#ffffff':readable(colors[0],colors[1]),'heading':readable(colors[1],bg)};
+  Object.entries(vars).forEach(([key,value])=>document.documentElement.style.setProperty('--'+key,value));
+  document.querySelector('meta[name="theme-color"]').content=bg;
+  document.getElementById('theme-status').textContent='New color theme selected.';
+ }
+ document.getElementById('change-colors').addEventListener('click',change);change();
+})();
