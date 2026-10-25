@@ -39,7 +39,7 @@
     } else $('word-preview').textContent='Choose at least one unit to start your adventure.';
     $('setup-error').textContent='';
   }
-  function showSection(id) { ['setup','quiz','results'].forEach(section=>{$(section).hidden=section!==id;}); window.scrollTo({top:0,behavior:'instant'}); }
+  function showSection(id) { if(confettiCleanup)confettiCleanup(); ['setup','quiz','results'].forEach(section=>{$(section).hidden=section!==id;}); window.scrollTo({top:0,behavior:'instant'}); }
   function start(pool,config) {
     questions=core.generate(pool,config);roundPool=pool;roundConfig=config;current=0;responses=[];activeUnits=[...new Set(pool.map(w=>w.unit))].sort((a,b)=>a-b);showSection('quiz');renderQuestion();
   }
@@ -80,6 +80,23 @@
     const learning=element('div',undefined,'learning');learning.append(element('p',`${question.word.word} (${question.sense.pos}) — ${question.sense.definition}`));
     if(question.word.synonyms)learning.append(element('p',`Synonyms: ${question.word.synonyms}`));if(question.word.antonyms)learning.append(element('p',`Antonyms: ${question.word.antonyms}`));feedback.append(learning);$('next').hidden=false;$('next').focus();
   }
+  let confettiCleanup;
+  function celebratePerfectScore() {
+    if (confettiCleanup) confettiCleanup();
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const shower=element('div',undefined,'confetti-shower');shower.setAttribute('aria-hidden','true');
+    const colors=['#ffcd56','#ff6b8b','#57c9bb','#728cff','#b58aff'];
+    for(let i=0;i<100;i++) {
+      const piece=element('i',undefined,'confetti-piece');
+      piece.style.left=`${Math.random()*100}%`;piece.style.background=colors[i%colors.length];
+      piece.style.setProperty('--delay',`${Math.random()*1.8}s`);piece.style.setProperty('--duration',`${2.5+Math.random()*1.5}s`);
+      piece.style.setProperty('--drift',`${Math.random()*180-90}px`);piece.style.setProperty('--spin',`${Math.random()*1080-540}deg`);
+      shower.append(piece);
+    }
+    document.body.append(shower);
+    const timer=setTimeout(()=>shower.remove(),6000);
+    confettiCleanup=()=>{clearTimeout(timer);shower.remove();confettiCleanup=null;};
+  }
   function renderResults() {
     showSection('results');const correct=responses.filter(r=>r.correct).length, missed=responses.filter(r=>!r.correct);const percent=Math.round(correct/questions.length*100);
     $('final-score').textContent=`${correct} / ${questions.length}`;$('final-percent').textContent=`${percent}%`;
@@ -90,7 +107,7 @@
       if(!response.correct)article.append(element('p',`You answered: ${response.answer} · Answer: ${response.question.answer}`,'your-answer'));
       word.senses.forEach(sense=>article.append(element('p',`(${sense.pos}) ${sense.definition}`)));
       if(word.synonyms)article.append(element('p',`Synonyms: ${word.synonyms}`));if(word.antonyms)article.append(element('p',`Antonyms: ${word.antonyms}`));$('review-list').append(article);
-    });$('results-title').focus();
+    });$('results-title').focus();if(correct===questions.length)celebratePerfectScore();
   }
   document.querySelectorAll('[name="grade"]').forEach(input=>input.addEventListener('change',()=>{grade=input.value;selected=selectedByGrade[grade];renderUnits();save();}));
   document.querySelectorAll('[name="mode"]').forEach(input=>input.addEventListener('change',()=>{save();$('setup-error').textContent='';}));
