@@ -3,3 +3,5 @@
 .hero h1{color:#366493}.hero h1 span{color:#1f3e64}.card-two{background:#366493;color:#fff}.grades span{background:#fff;min-height:72px}.grades input:checked+span{font-size:17px}
 
 .hero h1{color:var(--heading)}.hero h1 span{color:var(--ink)}.card-one{background:var(--card-one);color:var(--card-one-ink)}.card-two{background:var(--card-two);color:var(--card-two-ink)}.brand-icon{color:white}.brand-icon span,.art-spark,.s3,.results-star{color:var(--purple)}.art-ring{border-color:var(--purple)}.step.orange,.modes b,.unit-preview,.score-pill{background:var(--lavender);color:var(--ink)}.grades input:checked+span small{color:white}.modes label{border-color:var(--line)}select,.choice,.secondary,#typed-answer{border-color:var(--line)}.choice .letter{background:var(--lavender)}.progress{background:var(--line)}.color-button{font-size:12px;white-space:nowrap}.topbar{gap:16px}.top-note{margin-left:auto}@media(max-width:650px){.color-button{font-size:11px;padding:10px}.brand{font-size:21px}}
+
+.choice.selected:not(.correct):not(.wrong){background:var(--lavender);border:2px solid var(--purple);box-shadow:0 0 0 1px var(--purple)}#check-answer{margin-top:20px}
