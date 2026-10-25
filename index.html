@@ -7,10 +7,10 @@
   <meta name="description" content="Pick your vocabulary units and practice with word clues, meanings, spelling, and sentence quizzes.">
   <title>Word Quest • Vocabulary adventures</title>
   <link rel="icon" href="icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=random-palettes">
+  <link rel="stylesheet" href="styles.css?v=select-submit">
   <script src="data.js" defer></script>
   <script src="core.js?v=clues-v2" defer></script>
-  <script src="app.js?v=clues-v2" defer></script>
+  <script src="app.js?v=select-submit" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to quiz builder</a>
@@ -55,7 +55,7 @@
     <div class="quiz-top"><button id="back-setup" class="text-button" type="button">← Change units</button><span id="quiz-context"></span><span id="live-score" class="score-pill"></span></div>
     <div class="progress-meta"><span id="question-number"></span><span id="progress-percent"></span></div><div id="progress" class="progress" role="progressbar" aria-label="Quiz progress" aria-valuemin="0" aria-valuemax="100"><div id="progress-fill"></div></div>
     <article class="question-card"><div class="question-tags"><span id="type-tag" class="tag"></span><span id="question-unit" class="unit-tag"></span></div><h1 id="quiz-title" tabindex="-1"></h1><p id="question-clue" class="clue"></p><p id="part-of-speech" class="part-of-speech"></p>
-      <form id="answer-form"><div id="choices" class="choices"></div><div id="typed-wrap" hidden><label for="typed-answer">Your word</label><input id="typed-answer" type="text" placeholder="Type your answer…" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"><button id="check-answer" class="primary" type="submit">Check answer <span aria-hidden="true">→</span></button></div></form>
+      <form id="answer-form"><div id="choices" class="choices"></div><div id="typed-wrap" hidden><label for="typed-answer">Your word</label><input id="typed-answer" type="text" placeholder="Type your answer…" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></div><button id="check-answer" class="primary" type="submit">Submit <span aria-hidden="true">→</span></button></form>
       <div id="feedback" class="feedback" role="status" aria-live="polite" hidden></div><button id="next" class="primary next-button" type="button" hidden>Next question →</button>
     </article><p class="quiz-tip">Take a breath. You've got this.</p>
   </section>
