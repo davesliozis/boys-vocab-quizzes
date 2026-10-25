@@ -4,7 +4,7 @@
   const data = window.VOCAB_DATA, core = window.QuizCore;
   const names = {meaning:'Match the meaning',word:'Pick the word',synonym:'Synonym clues',antonym:'Antonym clues',typing:'Spell it out',sentence:'Fill the gap'};
   const prompts = {meaning:'What does this word mean?',word:'Which word fits this definition?',synonym:'Which word has these synonyms?',antonym:'Which word has these antonyms?',typing:'Can you spell the word?',sentence:'Which word completes the sentence?'};
-  let grade = '3', selected = new Set(), questions = [], current = 0, responses = [], answered = false, roundPool = [], roundConfig = {}, activeUnits = [];
+  let grade = '3', selected = new Set(), questions = [], current = 0, responses = [], answered = false, selectedAnswer = null, roundPool = [], roundConfig = {}, activeUnits = [];
   const selectedByGrade = {'3':new Set(),'5':new Set()};
   function readSaved() {
     try {
@@ -44,7 +44,7 @@
     questions=core.generate(pool,config);roundPool=pool;roundConfig=config;current=0;responses=[];activeUnits=[...new Set(pool.map(w=>w.unit))].sort((a,b)=>a-b);showSection('quiz');renderQuestion();
   }
   function renderQuestion() {
-    const question=questions[current];answered=false;
+    const question=questions[current];answered=false;selectedAnswer=null;
     $('question-number').textContent=`Question ${current+1} of ${questions.length}`;
     $('progress-percent').textContent=`${Math.round(current/questions.length*100)}% complete`;
     $('progress-fill').style.width=`${current/questions.length*100}%`;$('progress').setAttribute('aria-valuenow',Math.round(current/questions.length*100));
@@ -56,10 +56,10 @@
       const parts=question.sense.sentence.split(/\{[^}]+\}/);clue.append(document.createTextNode(parts[0]),element('span','_____','gap'),document.createTextNode(parts[1]||''));
     } else clue.textContent=question.type==='meaning'?question.word.word:question.type==='synonym'?core.cleanSynonyms(question.word.synonyms):question.type==='antonym'?core.cleanSynonyms(question.word.antonyms):question.sense.definition;
     $('part-of-speech').textContent=question.type==='synonym'?'Synonyms — words with similar meanings':question.type==='antonym'?'Antonyms — words with opposite meanings':({'n.':'Noun','v.':'Verb','adj.':'Adjective','adv.':'Adverb'}[question.sense.pos]||question.sense.pos);
-    $('choices').replaceChildren();$('choices').hidden=!question.options;$('typed-wrap').hidden=Boolean(question.options);$('typed-answer').value='';$('typed-answer').disabled=false;$('typed-answer').removeAttribute('aria-invalid');$('check-answer').disabled=false;
+    $('choices').replaceChildren();$('choices').hidden=!question.options;$('typed-wrap').hidden=Boolean(question.options);$('typed-answer').value='';$('typed-answer').disabled=false;$('typed-answer').removeAttribute('aria-invalid');$('check-answer').disabled=Boolean(question.options);
     if(question.options)question.options.forEach((option,i)=> {
       const button=element('button',undefined,'choice'+(question.type==='meaning'?' definition-choice':''));button.type='button';button.dataset.answer=option;button.append(element('span',String.fromCharCode(65+i),'letter'),element('span',option,'choice-text'));
-      button.addEventListener('click',()=>submit(option));$('choices').append(button);
+      button.setAttribute('aria-pressed','false');button.addEventListener('click',()=>{if(answered)return;selectedAnswer=option;for(const choice of $('choices').children){const chosen=choice===button;choice.classList.toggle('selected',chosen);choice.setAttribute('aria-pressed',String(chosen));}$('check-answer').disabled=false;});$('choices').append(button);
     });
     $('feedback').hidden=true;$('feedback').replaceChildren();$('next').hidden=true;$('next').textContent=current===questions.length-1?'See my results →':'Next question →';
     $('quiz-title').focus();
@@ -102,7 +102,7 @@
     if(!getTypes().length){$('setup-error').textContent='Choose at least one question style.';return;}
     save();start(data[grade].filter(word=>selected.has(word.unit)),{types:getTypes(),count:$('quiz-length').value,distractorPool:data[grade].filter(w=>selected.has(w.unit))});
   });
-  $('answer-form').addEventListener('submit',event=>{event.preventDefault();submit($('typed-answer').value);});
+  $('answer-form').addEventListener('submit',event=>{event.preventDefault();submit(questions[current].options ? (selectedAnswer || '') : $('typed-answer').value);});
   $('next').addEventListener('click',()=>{if(!answered)return;if(current===questions.length-1)renderResults();else{current++;renderQuestion();}});
   $('back-setup').addEventListener('click',()=>{showSection('setup');$('unit-title').setAttribute('tabindex','-1');$('unit-title').focus();});
   $('new-quest').addEventListener('click',()=>{showSection('setup');$('start').focus();});
