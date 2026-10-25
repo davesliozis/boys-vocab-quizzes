@@ -9,8 +9,8 @@
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css?v=random-palettes">
   <script src="data.js" defer></script>
-  <script src="core.js" defer></script>
-  <script src="app.js?v=random-palettes-25" defer></script>
+  <script src="core.js?v=clues-v2" defer></script>
+  <script src="app.js?v=clues-v2" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to quiz builder</a>
@@ -38,7 +38,8 @@
         <fieldset class="modes"><legend>Question styles</legend>
           <label><input type="checkbox" name="mode" value="meaning" checked><span><strong>Match the meaning</strong><small>What does this word mean?</small></span><b aria-hidden="true">Aa</b></label>
           <label><input type="checkbox" name="mode" value="word" checked><span><strong>Pick the word</strong><small>A definition, four possibilities.</small></span><b aria-hidden="true">↗</b></label>
-          <label><input type="checkbox" name="mode" value="synonym" checked><span><strong>Follow the clues</strong><small>Guess the word from synonyms.</small></span><b aria-hidden="true">✦</b></label>
+          <label><input type="checkbox" name="mode" value="synonym" checked><span><strong>Synonym clues</strong><small>Guess the word from synonyms.</small></span><b aria-hidden="true">✦</b></label>
+          <label><input type="checkbox" name="mode" value="antonym" checked><span><strong>Antonym clues</strong><small>Guess the word from its opposites.</small></span><b aria-hidden="true">↔</b></label>
           <label><input type="checkbox" name="mode" value="typing" checked><span><strong>Spell it out</strong><small>Type the word that fits.</small></span><b aria-hidden="true">⌨</b></label>
           <label><input type="checkbox" name="mode" value="sentence" checked><span><strong>Fill the gap</strong><small>Complete the sentence.</small></span><b aria-hidden="true">__</b></label>
         </fieldset>
