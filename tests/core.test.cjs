@@ -21,7 +21,7 @@ test('all units and modes generate answerable quizzes with unique words and uniq
   }
 });
 test('short mixed rounds sample different selected units and vary styles',()=>{
- const pool=data['5'].filter(w=>[1,5,18].includes(w.unit));const q=core.generate(pool,{count:10},seeded(14));assert.equal(q.length,10);assert.equal(new Set(q.map(q=>q.word.unit)).size,3);assert.equal(new Set(q.map(q=>q.type)).size,5);
+ const pool=data['5'].filter(w=>[1,5,18].includes(w.unit));const q=core.generate(pool,{count:10},seeded(14));assert.equal(q.length,10);assert.equal(new Set(q.map(q=>q.word.unit)).size,3);assert.equal(new Set(q.map(q=>q.type)).size,core.TYPES.length);
 });
 test('single missed-word retries remain valid, including multiple-choice styles',()=>{
  for(const type of core.TYPES){const q=core.generate([data['5'][0]],{count:'all',types:[type]})[0];assert.ok(core.isCorrect(q,q.answer));}
@@ -31,4 +31,17 @@ test('typing ignores case and extra whitespace but does not accept misspellings'
 });
 test('empty unit or mode selections fail clearly',()=>{
  assert.throws(()=>core.generate([]),/unit/);assert.throws(()=>core.generate(data['3'],{types:[]}),/style/);
+});
+
+test('synonym and antonym choices stay in the target unit across mixed-unit rounds and retries',()=>{
+ for(const grade of ['3','5'])for(const type of ['synonym','antonym']){
+ const pool=data[grade];for(const q of core.generate(pool,{types:[type],count:'all'},seeded(22))){
+ if(q.type!==type)continue;
+ assert.ok(q.word[type==='synonym'?'synonyms':'antonyms'].trim());
+ assert.equal(q.options.length,4);
+ for(const option of q.options)assert.ok(pool.some(w=>w.unit===q.word.unit&&w.word===option));
+ const retry=core.generate([q.word],{types:[type],distractorPool:pool})[0];assert.equal(retry.options.length,4);
+ for(const option of retry.options)assert.ok(pool.some(w=>w.unit===q.word.unit&&w.word===option));
+ }
+ }
 });
